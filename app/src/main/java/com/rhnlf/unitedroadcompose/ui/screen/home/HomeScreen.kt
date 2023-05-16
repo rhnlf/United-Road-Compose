@@ -1,5 +1,6 @@
 package com.rhnlf.unitedroadcompose.ui.screen.home
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -12,18 +13,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -32,17 +25,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rhnlf.unitedroadcompose.di.Injection
 import com.rhnlf.unitedroadcompose.model.Player
+import com.rhnlf.unitedroadcompose.model.PlayersData
 import com.rhnlf.unitedroadcompose.ui.ViewModelFactory
 import com.rhnlf.unitedroadcompose.ui.common.UiState
 import com.rhnlf.unitedroadcompose.ui.component.PlayerItem
+import com.rhnlf.unitedroadcompose.ui.component.PlayerNotFound
+import com.rhnlf.unitedroadcompose.ui.component.ScrollToTopButton
 import com.rhnlf.unitedroadcompose.ui.component.SearchBar
 import kotlinx.coroutines.launch
 
@@ -76,9 +71,9 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     player: List<Player>,
-    modifier: Modifier = Modifier,
     navigateToDetail: (Int) -> Unit,
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    modifier: Modifier = Modifier,
 ) {
     val query by viewModel.query
 
@@ -88,7 +83,6 @@ fun HomeContent(
         val showButton: Boolean by remember {
             derivedStateOf { listState.firstVisibleItemIndex > 0 }
         }
-
         LazyColumn(
             state = listState,
             verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -96,7 +90,7 @@ fun HomeContent(
         ) {
             if (player.isEmpty()) {
                 item {
-                    NotFound()
+                    PlayerNotFound()
                 }
             }
             items(player, key = { it.id }) { data ->
@@ -120,7 +114,7 @@ fun HomeContent(
             enter = fadeIn() + slideInVertically(),
             exit = fadeOut() + slideOutVertically(),
             modifier = Modifier
-                .padding(bottom = 30.dp)
+                .padding(bottom = 20.dp)
                 .align(Alignment.BottomCenter)
         ) {
             ScrollToTopButton(onClick = {
@@ -132,34 +126,19 @@ fun HomeContent(
     }
 }
 
+@Preview(
+    showBackground = true,
+    device = Devices.PIXEL_4_XL,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
-fun NotFound() {
-    Text(
-        text = "Player not found",
-        textAlign = TextAlign.Center,
+private fun HomeScreenPreview() {
+    HomeContent(
+        PlayersData.players,
+        navigateToDetail = {},
+        viewModel = HomeViewModel(Injection.provideRepository()),
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .background(Color.Black)
     )
-}
-
-@Composable
-fun ScrollToTopButton(
-    onClick: () -> Unit, modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier
-            .shadow(elevation = 10.dp, shape = CircleShape)
-            .clip(shape = CircleShape)
-            .size(56.dp),
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.White, contentColor = MaterialTheme.colors.primary
-        )
-    ) {
-        Icon(
-            imageVector = Icons.Filled.KeyboardArrowUp,
-            contentDescription = null,
-        )
-    }
 }

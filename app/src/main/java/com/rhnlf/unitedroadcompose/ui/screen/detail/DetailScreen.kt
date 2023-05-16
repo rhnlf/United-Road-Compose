@@ -66,7 +66,6 @@ fun DetailScreen(
     }
 }
 
-
 @Composable
 fun DetailContent(
     name: String,
@@ -88,9 +87,9 @@ fun DetailContent(
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
+                    .alpha(0.9f)
                     .height(240.dp)
                     .fillMaxWidth()
-                    .alpha(0.7f)
             )
             AsyncImage(
                 model = image,

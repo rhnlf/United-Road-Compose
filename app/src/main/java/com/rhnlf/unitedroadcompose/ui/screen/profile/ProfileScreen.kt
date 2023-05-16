@@ -34,7 +34,7 @@ fun ProfileScreen() {
     Scaffold(topBar = {
         TopAppBar(
             title = {
-                Text(text = stringResource(R.string.menu_profile))
+                Text(text = stringResource(R.string.about_page))
             },
             backgroundColor = MaterialTheme.colors.primary,
             contentColor = Color.White,
@@ -62,23 +62,25 @@ fun ProfileScreen() {
 
 @Composable
 fun ProfileContent() {
-    Card(
-        modifier = Modifier.size(200.dp), shape = CircleShape, elevation = 3.dp
-    ) {
-        Image(
-            painterResource(R.drawable.pas_foto),
-            contentDescription = stringResource(R.string.foto_raihan_alif),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-    Spacer(modifier = Modifier.size(16.dp))
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth(),
     ) {
+        Card(
+            modifier = Modifier.size(200.dp),
+            shape = CircleShape,
+            elevation = 3.dp,
+        ) {
+            Image(
+                painterResource(R.drawable.pas_foto),
+                contentDescription = stringResource(R.string.about_page),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+        Spacer(modifier = Modifier.size(16.dp))
         Text(
-            text = stringResource(R.string.nama),
+            text = stringResource(R.string.name),
             fontWeight = FontWeight.Bold,
             fontSize = 30.sp,
             fontFamily = FontFamily.SansSerif,

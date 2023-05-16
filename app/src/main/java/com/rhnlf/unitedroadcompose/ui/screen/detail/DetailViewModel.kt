@@ -13,6 +13,7 @@ class DetailViewModel(
     private val repository: PlayerRepository
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<UiState<Player>> = MutableStateFlow(UiState.Loading)
+
     val uiState: StateFlow<UiState<Player>>
         get() = _uiState
 

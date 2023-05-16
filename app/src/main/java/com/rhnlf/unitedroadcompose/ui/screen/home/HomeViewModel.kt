@@ -31,7 +31,6 @@ class HomeViewModel(private val repository: PlayerRepository) : ViewModel() {
                 _uiState.value = UiState.Success(players)
             }
         }
-
     }
 
     fun search(newQuery: String) {

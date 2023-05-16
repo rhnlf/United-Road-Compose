@@ -31,8 +31,8 @@ import com.rhnlf.unitedroadcompose.ui.theme.UnitedRoadTheme
 
 @Composable
 fun UnitedRoadApp(
-    modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -89,21 +89,25 @@ private fun BottomBar(
         val currentRoute = navBackStackEntry?.destination?.route
         val navigationItems = listOf(
             NavigationItem(
-                title = stringResource(R.string.menu_home),
+                title = stringResource(R.string.home_page),
                 icon = Icons.Default.Home,
                 screen = Screen.Home
             ),
             NavigationItem(
-                title = stringResource(R.string.menu_profile),
+                title = stringResource(R.string.profile_page),
                 icon = Icons.Default.AccountCircle,
-                screen = Screen.Profile
+                screen = Screen.Profile,
             ),
         )
         BottomNavigation {
             navigationItems.map { item ->
                 BottomNavigationItem(icon = {
                     Icon(
-                        imageVector = item.icon, contentDescription = item.title
+                        imageVector = item.icon,
+                        contentDescription = if (item.title == stringResource(R.string.home_page)) stringResource(
+                            R.string.home_page
+                        )
+                        else stringResource(R.string.about_page)
                     )
                 },
                     label = { Text(item.title) },
